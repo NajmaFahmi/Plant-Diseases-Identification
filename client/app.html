@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leaf Disease</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!--    <script src="app.js"></script>-->
+<!--    <link rel="stylesheet" href="app.css">-->
+
+    <script src="{{ url_for('static',filename='app.js') }}"></script>
+    <link rel="stylesheet"  href= "{{ url_for('static',filename='app.css') }}">
+
+    <script>
+        var loadFile = function(event) {
+            var image = document.getElementById('output');
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
+    </script>
+
+</head>
+<body>
+    <div class="img"></div>
+    <nav class="navbar navbar-light bg-light justify-content-between">
+      <a class="navbar-brand navbar-title"><b>Disease Detection</b></a>
+    </nav>
+    <div class="container" style="flex-wrap: wrap;">
+        <div class="row">
+            <div class="col-md-6 col-lg-6">
+                <form class="form_area" style="opacity: 100%" enctype="multipart/form-data">
+                    <div class="form-group justify-content-md-center">
+                        <h2 class="text-result">Form Identifikasi Penyakit</h2>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label">Luas Lahan (Hektar) </label>
+                        <div class="col-sm-7">
+                            <input type="number" min="0" step="1" class="form-control" id="uiLandArea" placeholder="Luas area sawah..." required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label">Harga Minimal</label>
+                        <div class="col-sm-7">
+                            <input type="number" min="0" step="1" class="form-control" id="uiMinimumPrice" placeholder="Harga minimal obat..." required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label">Harga Maksimal </label>
+                        <div class="col-sm-7">
+                            <input type="number" min="0" step="1" class="form-control" id="uiMaximumPrice" placeholder="Harga maksimal obat..." required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label" for="uiImage">Unggah Foto Daun</label>
+                        <div class="col-md-7">
+                            <input type="file" class="form-control" id="uiImage" name="plant_leave" accept=".jpg, .jpeg, .png" onchange="loadFile(event)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <p><img id="output" src="{{url_for('static', filename='upload_image.png')}}" width=100% style="border-radius: 10px"/></p>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" onclick="onClickedAnalysis()" class="btn btn-success col-md-12 col-lg-12" style="margin-bottom: -15px;">Mulai mengidentifikasi</button>
+                    </div>
+
+                </form>
+            </div>
+            <div class="col-md-6 col-lg-6 result_area" id="uiApprovalResult">
+                <h2 class="text-result" id="prediction_result">Hasil Identifikasi [Penyakit] </h2>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p id="disease_info">Informasi detail penyakit - </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 space-title-info">
+                        <h5>Rekomendasi Perawatan Tanaman</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p id="disease_treatment">Cara perawatan tanaman -</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 space-title-info" style="margin-bottom: -25px">
+                        <h5>Rekomendasi Pestisida</h5>
+                    </div>
+                    <div class="col-md-12 space-title-info">
+                        <p id="message_obat">Cari data...<p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped">
+                          <thead>
+                            <tr>
+                              <th scope="col">No</th>
+                              <th scope="col">Pestisida</th>
+                              <th scope="col">Harga</th>
+                              <th scope="col">Butuh</th>
+                              <th scope="col">Toko</th>
+                            </tr>
+                          </thead>
+                          <tbody id="dataTable">
+                            <tr>
+                              <th scope="row">-</th>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer_area">
+      <ul class="ul-footer">
+        <li class="li-footer"><a href="#">Created by Digifarm Team</a></li>
+        <li class="li-footer"><a href="https://github.com/irwanafandi24/Disease-Identification" target="_blank">Github</a></li>
+      </ul>
+    </footer>
+</body>
+</html>
